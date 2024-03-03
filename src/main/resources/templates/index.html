@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JokeBot Service</title>
+</head>
+<body>
+<h1>JokeBot Service</h1>
+
+<!-- Form for adding a new joke -->
+<h2>Add New Joke</h2>
+<form action="/addJoke" method="post">
+    <label for="newJokeJson">Enter Joke JSON:</label>
+    <textarea id="newJokeJson" name="newJokeJson" rows="4" cols="50" required></textarea><br>
+    <button type="submit">Add Joke</button>
+</form>
+
+<!-- Form for updating a joke -->
+<h2>Update Joke</h2>
+<form action="/updateJoke" method="post">
+    <label for="updatedJokeId">Joke ID to Update:</label>
+    <input type="number" id="updatedJokeId" name="updatedJokeId" required><br>
+    <label for="updatedJokeText">Updated Joke Text:</label>
+    <textarea id="updatedJokeText" name="updatedJokeText" rows="4" cols="50" required></textarea><br>
+    <button type="submit">Update Joke</button>
+</form>
+
+<!-- Form for deleting a joke -->
+<h2>Delete Joke</h2>
+<form action="/deleteJoke" method="post">
+    <label for="deletedJokeId">Joke ID to Delete:</label>
+    <input type="number" id="deletedJokeId" name="deletedJokeId" required><br>
+    <button type="submit">Delete Joke</button>
+</form>
+
+<!-- Display all jokes -->
+<h2>All Jokes</h2>
+<ul>
+    <!-- Loop through jokes and display each one -->
+    <!-- You need to replace this part with actual data from your backend -->
+    <li>Joke 1</li>
+    <li>Joke 2</li>
+    <li>Joke 3</li>
+    <!-- End of loop -->
+</ul>
+</body>
+</html>
