@@ -3,6 +3,9 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+# Ignore local application.properties
+!**src/main/resources/application-local.properties
+
 
 ### STS ###
 .apt_generated
@@ -18,7 +21,7 @@ target/
 *.iws
 *.iml
 *.ipr
-*.properties
+
 
 ### NetBeans ###
 /nbproject/private/
