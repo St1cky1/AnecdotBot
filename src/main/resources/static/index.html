@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JokeBot Frontend</title>
+</head>
+<body>
+<h1>JokeBot</h1>
+
+<div>
+    <h2>All Jokes</h2>
+    <ul id="jokesList"></ul>
+</div>
+
+<div>
+    <h2>Add New Joke</h2>
+    <textarea id="newJokeInput" rows="3" placeholder="Enter your joke"></textarea>
+    <button onclick="addNewJoke()">Add Joke</button>
+</div>
+
+<script>
+    async function getAllJokes() {
+        const response = await fetch('http://localhost:8080/jokes');
+        const jokes = await response.json();
+
+        const jokesList = document.getElementById('jokesList');
+        jokesList.innerHTML = '';
+
+        jokes.forEach(joke => {
+            const listItem = document.createElement('li');
+            listItem.textContent = joke.joke;
+            jokesList.appendChild(listItem);
+        });
+    }
+
+    async function addNewJoke() {
+        const newJokeInput = document.getElementById('newJokeInput');
+        const newJoke = newJokeInput.value;
+
+        const response = await fetch('http://localhost:8080/jokes', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newJoke),
+        });
+
+        if (response.status === 201) {
+            // Successfully added the joke, refresh the list
+            getAllJokes();
+        } else {
+            alert('Failed to add the joke. Please try again.');
+        }
+    }
+
+    // Initial load
+    getAllJokes();
+</script>
+</body>
+</html>
