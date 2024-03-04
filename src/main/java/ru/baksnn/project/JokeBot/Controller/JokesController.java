@@ -39,13 +39,12 @@ public class JokesController {
         Optional<JokesModel> existingJoke = service.getJokesById(id);
 
         if (existingJoke.isPresent()) {
-            // Update the fields you want to modify (ignoring the id from the request body)
+
             JokesModel jokeToUpdate = existingJoke.get();
             jokeToUpdate.setJoke(updatedJoke.getJoke());
-            // Update TimeUpdated when jokes changed
+
             jokeToUpdate.setTimeUpdated(LocalDate.now());
 
-            // Save the updated joke
             JokesModel savedJoke = service.updateJoke(jokeToUpdate);
 
             return ResponseEntity.ok(savedJoke);
