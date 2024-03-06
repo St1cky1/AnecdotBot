@@ -17,7 +17,7 @@ import java.util.Date;
 public class JokesModel {
     @Id //Первичный ключ всему голова
     @Column(name = "id") //Название поля/столбца
-    //@GeneratedValue(strategy = GenerationType.IDENTITY) //Автогененерация значений по возрастанию - 1-2-3 и тп
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //Автогененерация значений по возрастанию - 1-2-3 и тп
     private Long id;
 
     @Column(name = "joke")

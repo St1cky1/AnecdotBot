@@ -53,11 +53,10 @@ public class JokesController {
         }
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<JokesModel> deleteJoke(@PathVariable Long id, @RequestBody JokesModel deletedJoke) {
+    public ResponseEntity<JokesModel> deleteJoke(@PathVariable Long id) {
         Optional<JokesModel> deleteToJoke = service.getJokesById(id);
         if (deleteToJoke.isPresent()) {
             JokesModel jokeToDelete = deleteToJoke.get();
-            jokeToDelete.setJoke(deletedJoke.getJoke());
             JokesModel deleteJoke = service.deleteJoke(jokeToDelete);
             return ResponseEntity.ok(deleteJoke);
         } else {
