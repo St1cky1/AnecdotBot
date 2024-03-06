@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -13,7 +12,6 @@ import ru.baksnn.project.JokeBot.Model.JokesModel;
 import ru.baksnn.project.JokeBot.Repository.JokesRepository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 @Data

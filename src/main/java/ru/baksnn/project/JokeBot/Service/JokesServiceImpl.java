@@ -43,7 +43,7 @@
                 e.printStackTrace(); // обработка ошибок парсинга JSON
                 return Optional.empty();
             } catch (Exception e) {
-                e.printStackTrace(); // обработка других возможных ошибок при сохранении
+                e.printStackTrace();
                 return Optional.empty();
             }
         }
