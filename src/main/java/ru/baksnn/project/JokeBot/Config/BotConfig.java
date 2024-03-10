@@ -6,11 +6,21 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
+
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.baksnn.project.JokeBot.Model.JokesModel;
 import ru.baksnn.project.JokeBot.Repository.JokesRepository;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -32,19 +42,15 @@ public class BotConfig extends TelegramLongPollingBot {
             String messageText = update.getMessage().getText();
             long chatId = update.getMessage().getChatId();
 
-            switch (messageText) {
-                case "/start":
-                    startCommandReceived(chatId, update.getMessage().getChat().getFirstName());
-                    break;
-                case "/joke":
-                    sendJokes(chatId);
-                    break;
-                default:
-                    sendMessage(chatId, "Такой команды не существует. Введите /joke для получения шутки");
+            if ("Показать шутку".equals(messageText) || "/joke".equals(messageText)) {
+                sendJokesWithButton(chatId);
+            } else if ("/start".equals(messageText)) {
+                startCommandReceived(chatId, update.getMessage().getChat().getFirstName());
+            } else {
+                sendMessage(chatId, "Такой команды не существует. Введите /joke для получения шутки");
             }
         }
     }
-
     private void startCommandReceived(long chatId, String name) {
         String answer = "Hi, " + name + " Nice to meet you!";
         sendMessage(chatId, answer);
@@ -76,6 +82,45 @@ public class BotConfig extends TelegramLongPollingBot {
             throw new RuntimeException(e);
         }
     }
+    private void sendJokesWithButton(long chatId) {
+        List<JokesModel> jokes = jokesRepository.findAll();
+
+        if (jokes.isEmpty()) {
+            sendMessage(chatId, "No jokes available.");
+        } else {
+
+            Random random = new Random();
+            int randomIndex = random.nextInt(jokes.size());
+            JokesModel randomJoke = jokes.get(randomIndex);
+
+            ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
+            keyboardMarkup.setResizeKeyboard(true);
+
+            KeyboardButton button = new KeyboardButton();
+            button.setText("Показать шутку");
+
+
+            KeyboardRow row = new KeyboardRow();
+            row.add(button);
+
+            List<KeyboardRow> keyboard = new ArrayList<>();
+            keyboard.add(row);
+            keyboardMarkup.setKeyboard(keyboard);
+
+
+            SendMessage message = new SendMessage();
+            message.setChatId(String.valueOf(chatId));
+            message.setText(randomJoke.getJoke());
+            message.setReplyMarkup(keyboardMarkup);
+
+            try {
+                execute(message);
+            } catch (TelegramApiException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
 
     @Override
     public String getBotUsername() {
