@@ -50,8 +50,6 @@ public class BotConfig extends TelegramLongPollingBot {
         String answer = "Привет " + name + ", приятно познакомиться! \nНажимай кнопку или вводи команду /joke для получения шутки";
         sendMessage(chatId, answer);
     }
-    // e a j b f h c g e i d
-
     private void sendMessage(long chatId, String textToSend) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
