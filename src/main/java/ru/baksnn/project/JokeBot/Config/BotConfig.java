@@ -6,21 +6,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
-
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.baksnn.project.JokeBot.Model.JokesModel;
 import ru.baksnn.project.JokeBot.Repository.JokesRepository;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -52,24 +47,10 @@ public class BotConfig extends TelegramLongPollingBot {
         }
     }
     private void startCommandReceived(long chatId, String name) {
-        String answer = "Hi, " + name + " Nice to meet you!";
+        String answer = "Привет " + name + ", приятно познакомиться! \nНажимай кнопку или вводи команду /joke для получения шутки";
         sendMessage(chatId, answer);
     }
-
-    private void sendJokes(long chatId) {
-        List<JokesModel> jokes = jokesRepository.findAll();
-
-        if (jokes.isEmpty()) {
-            sendMessage(chatId, "No jokes available.");
-        } else {
-            // Отправить случайную шутку из списка
-            Random random = new Random();
-            int randomIndex = random.nextInt(jokes.size());
-            JokesModel randomJoke = jokes.get(randomIndex);
-
-            sendMessage(chatId, randomJoke.getJoke());
-        }
-    }
+    // e a j b f h c g e i d
 
     private void sendMessage(long chatId, String textToSend) {
         SendMessage message = new SendMessage();
@@ -98,15 +79,12 @@ public class BotConfig extends TelegramLongPollingBot {
 
             KeyboardButton button = new KeyboardButton();
             button.setText("Показать шутку");
-
-
             KeyboardRow row = new KeyboardRow();
             row.add(button);
 
             List<KeyboardRow> keyboard = new ArrayList<>();
             keyboard.add(row);
             keyboardMarkup.setKeyboard(keyboard);
-
 
             SendMessage message = new SendMessage();
             message.setChatId(String.valueOf(chatId));
