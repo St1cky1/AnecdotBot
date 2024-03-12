@@ -37,7 +37,7 @@ public class BotConfig extends TelegramLongPollingBot {
             String messageText = update.getMessage().getText();
             long chatId = update.getMessage().getChatId();
 
-            if ("Показать шутку".equals(messageText) || "/joke".equals(messageText)) {
+            if ("Показать шутку✅".equals(messageText) || "/joke".equals(messageText)) {
                 sendJokesWithButton(chatId);
             } else if ("/start".equals(messageText)) {
                 startCommandReceived(chatId, update.getMessage().getChat().getFirstName());
@@ -76,7 +76,7 @@ public class BotConfig extends TelegramLongPollingBot {
             keyboardMarkup.setResizeKeyboard(true);
 
             KeyboardButton button = new KeyboardButton();
-            button.setText("Показать шутку");
+            button.setText("Показать шутку✅");
             KeyboardRow row = new KeyboardRow();
             row.add(button);
 
