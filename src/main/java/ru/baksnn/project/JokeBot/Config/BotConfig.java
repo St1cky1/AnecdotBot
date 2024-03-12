@@ -96,8 +96,6 @@ public class BotConfig extends TelegramLongPollingBot {
             }
         }
     }
-
-
     @Override
     public String getBotUsername() {
         return botName;
