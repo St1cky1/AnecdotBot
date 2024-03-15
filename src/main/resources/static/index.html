@@ -100,39 +100,39 @@
 
 <div class="container">
     <div class="section">
-        <h2>All Jokes</h2>
-        <button onclick="getAllJokes()">Get All Jokes</button>
+        <h2>Все шутки</h2>
+        <button onclick="getAllJokes()">Получить все шутки</button>
         <ul id="allJokesList"></ul>
     </div>
     <div class="section">
-        <h2>Add Joke</h2>
-        <label for="newJokeText">Enter New Joke:</label>
+        <h2>Добавление новой шутки</h2>
+        <label for="newJokeText">Введите новую шутку:</label>
         <input type="text" id="newJokeText">
-        <button onclick="addJoke()">Add Joke</button>
+        <button onclick="addJoke()">Добавить шутку</button>
         <p id="addJokeMessage" class="message"></p>
     </div>
     <div class="section">
-        <h2>Get Joke by ID</h2>
-        <label for="jokeId">Enter Joke ID:</label>
+        <h2>Получить шутку по ID</h2>
+        <label for="jokeId">Введите ID шутки:</label>
         <input type="number" id="jokeId">
-        <button onclick="getJokeById()">Get Joke</button>
+        <button onclick="getJokeById()">Получить шутку</button>
         <p id="jokeById" class="message"></p>
     </div>
 
     <div class="section">
-        <h2>Update Joke</h2>
-        <label for="updateId">Enter Joke ID:</label>
+        <h2>Обновление шутки</h2>
+        <label for="updateId">Введите ID шутки:</label>
         <input type="number" id="updateId">
-        <label for="updateText">Enter New Joke:</label>
+        <label for="updateText">Введите новую шутку:</label>
         <input type="text" id="updateText">
-        <button onclick="updateJoke()">Update Joke</button>
+        <button onclick="updateJoke()">Обновить шутку</button>
     </div>
 
     <div class="section">
-        <h2>Delete Joke</h2>
-        <label for="deleteId">Enter Joke ID:</label>
+        <h2>Удаление шутки</h2>
+        <label for="deleteId">Введите ID шутки:</label>
         <input type="number" id="deleteId">
-        <button onclick="deleteJoke()">Delete Joke</button>
+        <button onclick="deleteJoke()">Удалить шутку</button>
     </div>
 
 
@@ -148,9 +148,9 @@
             const li = document.createElement('li');
             li.innerHTML = `
                 <p class="joke-info"><strong>ID:</strong> ${joke.id}</p>
-                <p class="joke-info"><strong>Joke:</strong> ${joke.joke}</p>
-                <p class="joke-info"><strong>Created Date:</strong> ${joke.timeCreated}</p>
-                <p class="joke-info"><strong>Updated Date:</strong> ${joke.timeUpdated}</p>
+                <p class="joke-info"><strong>Шутка:</strong> ${joke.joke}</p>
+                <p class="joke-info"><strong>Дата создания:</strong> ${joke.timeCreated}</p>
+                <p class="joke-info"><strong>Дата обновления:</strong> ${joke.timeUpdated}</p>
             `;
             allJokesList.appendChild(li);
         });
@@ -177,7 +177,7 @@
         const updateId = document.getElementById('updateId').value;
         const updateText = document.getElementById('updateText').value;
         if (!updateId || !updateText) {
-            alert('Please enter both joke ID and new joke text');
+            alert('Пожалуйста, введите ID шутки и новый текст шутки');
             return;
         }
         const response = await fetch(`/jokes/${updateId}`, {
@@ -188,32 +188,32 @@
             body: JSON.stringify({ joke: updateText })
         });
         if (response.ok) {
-            alert('Joke updated successfully');
+            alert('Шутка обновлена успешно');
         } else {
-            alert('Failed to update joke');
+            alert('Ошибка удаления шутки');
         }
     }
 
     async function deleteJoke() {
         const deleteId = document.getElementById('deleteId').value;
         if (!deleteId) {
-            alert('Please enter a joke ID to delete');
+            alert('Пожалуйста, введите ID шутки для удаления');
             return;
         }
         const response = await fetch(`/jokes/${deleteId}`, {
             method: 'DELETE'
         });
         if (response.ok) {
-            alert('Joke deleted successfully');
+            alert('Шутка удалена успешно');
         } else {
-            alert('Failed to delete joke');
+            alert('Ошибка удаления шутки');
         }
     }
 
     async function addJoke() {
         const newJokeText = document.getElementById('newJokeText').value;
         if (!newJokeText) {
-            document.getElementById('addJokeMessage').textContent = 'Please enter a joke to add';
+            document.getElementById('addJokeMessage').textContent = 'Пожалуйста, введите шутку для добавления';
             return;
         }
         const response = await fetch('/jokes', {
@@ -224,11 +224,11 @@
             body: JSON.stringify({ joke: newJokeText })
         });
         if (response.ok) {
-            alert('Joke added successfully');
+            alert('Шутка добавлено успешно');
             document.getElementById('addJokeMessage').textContent = '';
             getAllJokes();
         } else {
-            alert('Failed to add joke');
+            alert('Ошибка удаления шутки');
         }
     }
 </script>
