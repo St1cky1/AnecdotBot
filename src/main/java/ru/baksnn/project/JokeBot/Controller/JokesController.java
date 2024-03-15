@@ -26,7 +26,6 @@ public class JokesController {
     @GetMapping("/{id}")
     ResponseEntity<JokesModel> getJokes(@PathVariable("id") Long id) {
         return service.getJokesById(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-        // из-за того что не было builder'a в модели не работали get и set
     }
 
     @PostMapping
