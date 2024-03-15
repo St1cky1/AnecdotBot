@@ -17,14 +17,9 @@
         private final JokesRepository jokesRepository;
         @Override
         public List<JokesModel> AllJokes() {
-
             List<JokesModel> jokesList = jokesRepository.findAll();
-
-            LocalDate currentDate = LocalDate.now();
             jokesList.forEach(joke -> {
-
             });
-
             return jokesList;
         }
 
@@ -35,12 +30,11 @@
                 newJoke.setTimeCreated(LocalDate.now());
                 newJoke.setTimeUpdated(LocalDate.now());
 
-                // Сохранение новой шутки
                 JokesModel savedJoke = jokesRepository.save(newJoke);
 
                 return Optional.of(savedJoke);
             } catch (IOException e) {
-                e.printStackTrace(); // обработка ошибок парсинга JSON
+                e.printStackTrace();
                 return Optional.empty();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -59,7 +53,7 @@
 
                 return jokesRepository.save(jokeToUpdate);
             } else {
-                throw new NoSuchElementException("Joke with ID " + updatedJoke.getId() + " not found");
+                throw new NoSuchElementException("Шутка с " + updatedJoke.getId() + " ID не найдена");
             }
         }
         public JokesModel deleteJoke(JokesModel deletedJoke) {
@@ -69,7 +63,7 @@
                 jokesRepository.deleteById(deletedJoke.getId());
                 return existingJoke.get();
             } else {
-                throw new NoSuchElementException("Joke with ID " + deletedJoke.getId() + " not found");
+                throw new NoSuchElementException("Шутка с " + deletedJoke.getId() + " ID не найдена");
             }
         }
 
