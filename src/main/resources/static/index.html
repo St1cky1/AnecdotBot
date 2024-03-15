@@ -3,202 +3,234 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JokeBot</title>
+    <title>Joke Bot</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
             margin: 0;
-            padding: 20px;
-            background-color: #f0f0f0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         h1 {
             text-align: center;
-            color: #333;
+            margin: 20px 0;
         }
 
-        button, input[type="number"], input[type="text"] {
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="number"],
+        input[type="text"] {
+            width: calc(100% - 20px);
             padding: 10px;
             margin-bottom: 10px;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px;
-        }
-
-        button {
-            background-color: #007bff;
-            color: #fff;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        input[type="number"], input[type="text"] {
-            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
             box-sizing: border-box;
         }
 
-        form {
-            margin-bottom: 20px;
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
         }
 
         ul {
             list-style-type: none;
             padding: 0;
+            margin: 0;
         }
 
         li {
-            background-color: #fff;
-            padding: 10px;
-            border-radius: 5px;
+            background-color: #f9f9f9;
+            padding: 15px;
             margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
         }
 
-        li:hover {
-            background-color: #f5f5f5;
+        li:nth-child(even) {
+            background-color: #f2f2f2;
         }
 
-        .error {
-            color: #ff0000;
+        .message {
+            margin-top: 10px;
+            font-style: italic;
+            color: #777;
+        }
+
+        .joke-info {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #555;
         }
     </style>
 </head>
 <body>
-<h1>JokeBot</h1>
+<h1>Joke Bot</h1>
 
-<!-- Кнопка для отображения всех шуток -->
-<button onclick="loadAllJokes()">Показать все шутки</button>
+<div class="container">
+    <div class="section">
+        <h2>All Jokes</h2>
+        <button onclick="getAllJokes()">Get All Jokes</button>
+        <ul id="allJokesList"></ul>
+    </div>
+    <div class="section">
+        <h2>Add Joke</h2>
+        <label for="newJokeText">Enter New Joke:</label>
+        <input type="text" id="newJokeText">
+        <button onclick="addJoke()">Add Joke</button>
+        <p id="addJokeMessage" class="message"></p>
+    </div>
+    <div class="section">
+        <h2>Get Joke by ID</h2>
+        <label for="jokeId">Enter Joke ID:</label>
+        <input type="number" id="jokeId">
+        <button onclick="getJokeById()">Get Joke</button>
+        <p id="jokeById" class="message"></p>
+    </div>
 
-<!-- Список всех шуток -->
-<ul id="jokesList"></ul>
+    <div class="section">
+        <h2>Update Joke</h2>
+        <label for="updateId">Enter Joke ID:</label>
+        <input type="number" id="updateId">
+        <label for="updateText">Enter New Joke:</label>
+        <input type="text" id="updateText">
+        <button onclick="updateJoke()">Update Joke</button>
+    </div>
 
-<!-- Форма для выдачи шутки по ID -->
-<form id="getJokeForm">
-    <input type="number" id="jokeIdInput" placeholder="Введите ID шутки">
-    <button type="submit">Получить шутку</button>
-</form>
+    <div class="section">
+        <h2>Delete Joke</h2>
+        <label for="deleteId">Enter Joke ID:</label>
+        <input type="number" id="deleteId">
+        <button onclick="deleteJoke()">Delete Joke</button>
+    </div>
 
-<!-- Форма для добавления новой шутки -->
-<form id="addJokeForm">
-    <input type="text" id="newJokeInput" placeholder="Введите новую шутку">
-    <button type="submit">Добавить шутку</button>
-</form>
 
-<!-- Форма для изменения шутки по ID -->
-<form id="updateJokeForm">
-    <input type="number" id="updateJokeIdInput" placeholder="Введите ID шутки">
-    <input type="text" id="updatedJokeInput" placeholder="Новая шутка">
-    <button type="submit">Изменить шутку</button>
-</form>
+</div>
 
-<!-- Форма для удаления шутки по ID -->
-<form id="deleteJokeForm">
-    <input type="number" id="deleteJokeIdInput" placeholder="Введите ID шутки">
-    <button type="submit">Удалить шутку</button>
-</form>
-
-<!-- Скрипт для выполнения запросов на API -->
 <script>
-    // Функция для загрузки всех шуток
-    async function loadAllJokes() {
+    async function getAllJokes() {
         const response = await fetch('/jokes');
         const jokes = await response.json();
-        const jokesList = document.getElementById('jokesList');
-        jokesList.innerHTML = ''; // Очищаем список шуток перед загрузкой новых
+        const allJokesList = document.getElementById('allJokesList');
+        allJokesList.innerHTML = '';
         jokes.forEach(joke => {
             const li = document.createElement('li');
-            li.textContent = joke.joke;
-            jokesList.appendChild(li);
+            li.innerHTML = `
+                <p class="joke-info"><strong>ID:</strong> ${joke.id}</p>
+                <p class="joke-info"><strong>Joke:</strong> ${joke.joke}</p>
+                <p class="joke-info"><strong>Created Date:</strong> ${joke.timeCreated}</p>
+                <p class="joke-info"><strong>Updated Date:</strong> ${joke.timeUpdated}</p>
+            `;
+            allJokesList.appendChild(li);
         });
     }
 
-    // Функция для получения шутки по ID
-    async function getJokeById(event) {
-        event.preventDefault();
-        const jokeIdInput = document.getElementById('jokeIdInput');
-        const jokeId = jokeIdInput.value;
+    async function getJokeById() {
+        const jokeId = document.getElementById('jokeId').value;
+        if (!jokeId) {
+            document.getElementById('jokeById').textContent = 'Пожалуйста, введите ID шутки';
+            return;
+        }
         const response = await fetch(`/jokes/${jokeId}`);
-        if (response.ok) {
-            const joke = await response.json();
-            alert(joke.joke);
-        } else {
-            showError('Шутка не найдена');
-        }
+        const joke = await response.json();
+        const jokeById = document.getElementById('jokeById');
+        jokeById.textContent = joke ? `
+        ID: ${joke.id},
+        Шутка: ${joke.joke},
+        Дата создания: ${joke.timeCreated},
+        Дата обновления: ${joke.timeUpdated}
+    ` : 'Шутка не найдена';
     }
 
-    // Функция для добавления новой шутки
-    async function addJoke(event) {
-        event.preventDefault();
-        const newJokeInput = document.getElementById('newJokeInput');
-        const newJoke = newJokeInput.value;
-        const response = await fetch(`/jokes`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ joke: newJoke })
-        });
-        if (response.ok) {
-            alert('Шутка успешно добавлена');
-        } else {
-            showError('Ошибка при добавлении шутки');
+    async function updateJoke() {
+        const updateId = document.getElementById('updateId').value;
+        const updateText = document.getElementById('updateText').value;
+        if (!updateId || !updateText) {
+            alert('Please enter both joke ID and new joke text');
+            return;
         }
-    }
-
-    // Функция для изменения шутки по ID
-    async function updateJokeById(event) {
-        event.preventDefault();
-        const updateJokeIdInput = document.getElementById('updateJokeIdInput');
-        const updatedJokeInput = document.getElementById('updatedJokeInput');
-        const jokeId = updateJokeIdInput.value;
-        const updatedJoke = updatedJokeInput.value;
-        const response = await fetch(`/jokes/${jokeId}`, {
+        const response = await fetch(`/jokes/${updateId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ joke: updatedJoke })
+            body: JSON.stringify({ joke: updateText })
         });
         if (response.ok) {
-            alert('Шутка успешно изменена');
+            alert('Joke updated successfully');
         } else {
-            showError('Ошибка при изменении шутки');
+            alert('Failed to update joke');
         }
     }
 
-    // Функция для удаления шутки по ID
-    async function deleteJokeById(event) {
-        event.preventDefault();
-        const deleteJokeIdInput = document.getElementById('deleteJokeIdInput');
-        const jokeId = deleteJokeIdInput.value;
-        const response = await fetch(`/jokes/${jokeId}`, {
+    async function deleteJoke() {
+        const deleteId = document.getElementById('deleteId').value;
+        if (!deleteId) {
+            alert('Please enter a joke ID to delete');
+            return;
+        }
+        const response = await fetch(`/jokes/${deleteId}`, {
             method: 'DELETE'
         });
         if (response.ok) {
-            alert('Шутка успешно удалена');
+            alert('Joke deleted successfully');
         } else {
-            showError('Ошибка при удалении шутки');
+            alert('Failed to delete joke');
         }
     }
 
-    // Показать ошибку
-    function showError(message) {
-        const errorDiv = document.createElement('div');
-        errorDiv.textContent = message;
-        errorDiv.classList.add('error');
-        document.body.insertBefore(errorDiv, document.body.firstChild);
-        setTimeout(() => {
-            errorDiv.remove();
-        }, 3000);
+    async function addJoke() {
+        const newJokeText = document.getElementById('newJokeText').value;
+        if (!newJokeText) {
+            document.getElementById('addJokeMessage').textContent = 'Please enter a joke to add';
+            return;
+        }
+        const response = await fetch('/jokes', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ joke: newJokeText })
+        });
+        if (response.ok) {
+            alert('Joke added successfully');
+            document.getElementById('addJokeMessage').textContent = '';
+            getAllJokes();
+        } else {
+            alert('Failed to add joke');
+        }
     }
-
-    // Привязываем обработчики событий для отправки форм
-    document.getElementById('getJokeForm').addEventListener('submit', getJokeById);
-    document.getElementById('addJokeForm').addEventListener('submit', addJoke);
-    document.getElementById('updateJokeForm').addEventListener('submit', updateJokeById);
-    document.getElementById('deleteJokeForm').addEventListener('submit', deleteJokeById);
 </script>
 </body>
 </html>
