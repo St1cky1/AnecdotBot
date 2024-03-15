@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JokeBot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        button, input[type="number"], input[type="text"] {
+            padding: 10px;
+            margin-bottom: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        input[type="number"], input[type="text"] {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        li:hover {
+            background-color: #f5f5f5;
+        }
+
+        .error {
+            color: #ff0000;
+        }
+    </style>
+</head>
+<body>
+<h1>JokeBot</h1>
+
+<!-- Кнопка для отображения всех шуток -->
+<button onclick="loadAllJokes()">Показать все шутки</button>
+
+<!-- Список всех шуток -->
+<ul id="jokesList"></ul>
+
+<!-- Форма для выдачи шутки по ID -->
+<form id="getJokeForm">
+    <input type="number" id="jokeIdInput" placeholder="Введите ID шутки">
+    <button type="submit">Получить шутку</button>
+</form>
+
+<!-- Форма для добавления новой шутки -->
+<form id="addJokeForm">
+    <input type="text" id="newJokeInput" placeholder="Введите новую шутку">
+    <button type="submit">Добавить шутку</button>
+</form>
+
+<!-- Форма для изменения шутки по ID -->
+<form id="updateJokeForm">
+    <input type="number" id="updateJokeIdInput" placeholder="Введите ID шутки">
+    <input type="text" id="updatedJokeInput" placeholder="Новая шутка">
+    <button type="submit">Изменить шутку</button>
+</form>
+
+<!-- Форма для удаления шутки по ID -->
+<form id="deleteJokeForm">
+    <input type="number" id="deleteJokeIdInput" placeholder="Введите ID шутки">
+    <button type="submit">Удалить шутку</button>
+</form>
+
+<!-- Скрипт для выполнения запросов на API -->
+<script>
+    // Функция для загрузки всех шуток
+    async function loadAllJokes() {
+        const response = await fetch('/jokes');
+        const jokes = await response.json();
+        const jokesList = document.getElementById('jokesList');
+        jokesList.innerHTML = ''; // Очищаем список шуток перед загрузкой новых
+        jokes.forEach(joke => {
+            const li = document.createElement('li');
+            li.textContent = joke.joke;
+            jokesList.appendChild(li);
+        });
+    }
+
+    // Функция для получения шутки по ID
+    async function getJokeById(event) {
+        event.preventDefault();
+        const jokeIdInput = document.getElementById('jokeIdInput');
+        const jokeId = jokeIdInput.value;
+        const response = await fetch(`/jokes/${jokeId}`);
+        if (response.ok) {
+            const joke = await response.json();
+            alert(joke.joke);
+        } else {
+            showError('Шутка не найдена');
+        }
+    }
+
+    // Функция для добавления новой шутки
+    async function addJoke(event) {
+        event.preventDefault();
+        const newJokeInput = document.getElementById('newJokeInput');
+        const newJoke = newJokeInput.value;
+        const response = await fetch(`/jokes`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ joke: newJoke })
+        });
+        if (response.ok) {
+            alert('Шутка успешно добавлена');
+        } else {
+            showError('Ошибка при добавлении шутки');
+        }
+    }
+
+    // Функция для изменения шутки по ID
+    async function updateJokeById(event) {
+        event.preventDefault();
+        const updateJokeIdInput = document.getElementById('updateJokeIdInput');
+        const updatedJokeInput = document.getElementById('updatedJokeInput');
+        const jokeId = updateJokeIdInput.value;
+        const updatedJoke = updatedJokeInput.value;
+        const response = await fetch(`/jokes/${jokeId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ joke: updatedJoke })
+        });
+        if (response.ok) {
+            alert('Шутка успешно изменена');
+        } else {
+            showError('Ошибка при изменении шутки');
+        }
+    }
+
+    // Функция для удаления шутки по ID
+    async function deleteJokeById(event) {
+        event.preventDefault();
+        const deleteJokeIdInput = document.getElementById('deleteJokeIdInput');
+        const jokeId = deleteJokeIdInput.value;
+        const response = await fetch(`/jokes/${jokeId}`, {
+            method: 'DELETE'
+        });
+        if (response.ok) {
+            alert('Шутка успешно удалена');
+        } else {
+            showError('Ошибка при удалении шутки');
+        }
+    }
+
+    // Показать ошибку
+    function showError(message) {
+        const errorDiv = document.createElement('div');
+        errorDiv.textContent = message;
+        errorDiv.classList.add('error');
+        document.body.insertBefore(errorDiv, document.body.firstChild);
+        setTimeout(() => {
+            errorDiv.remove();
+        }, 3000);
+    }
+
+    // Привязываем обработчики событий для отправки форм
+    document.getElementById('getJokeForm').addEventListener('submit', getJokeById);
+    document.getElementById('addJokeForm').addEventListener('submit', addJoke);
+    document.getElementById('updateJokeForm').addEventListener('submit', updateJokeById);
+    document.getElementById('deleteJokeForm').addEventListener('submit', deleteJokeById);
+</script>
+</body>
+</html>
