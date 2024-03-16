@@ -185,17 +185,21 @@
             return;
         }
         const response = await fetch(`/jokes/${jokeId}`);
-        const joke = await response.json();
-        const jokeById = document.getElementById('jokeById');
-        jokeById.textContent = joke ? `
-        ID: ${joke.id},
-        Шутка: ${joke.joke},
-        Дата создания: ${joke.timeCreated},
-        Дата обновления: ${joke.timeUpdated}
-    ` : 'Шутка не найдена';
+        if (response.ok) {
+            const joke = await response.json();
+            const jokeById = document.getElementById('jokeById');
+            jokeById.innerHTML = `
+            <strong>ID</strong>: ${joke.id}<br>
+            <strong>Шутка:</strong> ${joke.joke}<br>
+            <strong>Дата создания:</strong> ${joke.timeCreated},<br>
+            <strong>Дата обновления:</strong> ${joke.timeUpdated}
+        `;
+        } else {
+            document.getElementById('jokeById').textContent = 'Шутка не найдена';
+        }
     }
 
-    async function updateJoke() {
+        async function updateJoke() {
         const updateId = document.getElementById('updateId').value;
         const updateText = document.getElementById('updateText').value;
         if (!updateId || !updateText) {
