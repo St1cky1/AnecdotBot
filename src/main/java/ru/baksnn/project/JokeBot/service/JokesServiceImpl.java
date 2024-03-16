@@ -68,7 +68,7 @@
         }
 
         public Optional<JokesModel> getJokesById(Long id) {
-            List<JokesModel> allJokes = AllJokes();
+            List<JokesModel> allJokes = allJokes();
             return allJokes.stream()
                     .filter(joke -> joke.getId().equals(id))
                     .findFirst();
