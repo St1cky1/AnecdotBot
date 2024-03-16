@@ -1,10 +1,13 @@
-package ru.baksnn.project.JokeBot.Config;
+package ru.baksnn.project.JokeBot.config;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -12,8 +15,9 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import ru.baksnn.project.JokeBot.Model.JokesModel;
-import ru.baksnn.project.JokeBot.Repository.JokesRepository;
+import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
+import ru.baksnn.project.JokeBot.model.JokesModel;
+import ru.baksnn.project.JokeBot.repository.JokesRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +25,6 @@ import java.util.Random;
 
 @Data
 @Configuration
-@PropertySource("classpath:application.properties")
 public class BotConfig extends TelegramLongPollingBot {
 
     private final JokesRepository jokesRepository;
@@ -104,5 +107,16 @@ public class BotConfig extends TelegramLongPollingBot {
     @Override
     public String getBotToken() {
         return token;
+    }
+    @Bean
+    public CommandLineRunner registerTelegramBot(BotConfig botConfig) {
+        return args -> {
+            try {
+                TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
+                botsApi.registerBot(botConfig);
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
+        };
     }
 }
