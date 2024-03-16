@@ -19,8 +19,8 @@ import java.util.Optional;
 public class JokesController {
     private final JokesService service;
     @GetMapping
-    public List<JokesModel> AllJokes() {
-        return service.AllJokes();
+    public List<JokesModel> allJokes() {
+        return service.allJokes();
     }
 
     @GetMapping("/{id}")

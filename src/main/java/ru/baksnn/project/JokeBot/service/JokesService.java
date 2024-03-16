@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface JokesService {
-    List<JokesModel> AllJokes();
+    List<JokesModel> allJokes();
 
     Optional<JokesModel> addNewJoke(String json);
 

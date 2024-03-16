@@ -16,7 +16,7 @@
     public class JokesServiceImpl implements JokesService {
         private final JokesRepository jokesRepository;
         @Override
-        public List<JokesModel> AllJokes() {
+        public List<JokesModel> allJokes() {
             List<JokesModel> jokesList = jokesRepository.findAll();
             jokesList.forEach(joke -> {
             });
