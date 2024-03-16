@@ -58,7 +58,6 @@
         }
         public JokesModel deleteJoke(JokesModel deletedJoke) {
             Optional<JokesModel> existingJoke = jokesRepository.findById(deletedJoke.getId());
-
             if (existingJoke.isPresent()) {
                 jokesRepository.deleteById(deletedJoke.getId());
                 return existingJoke.get();
@@ -66,7 +65,6 @@
                 throw new NoSuchElementException("Шутка с " + deletedJoke.getId() + " ID не найдена");
             }
         }
-
         public Optional<JokesModel> getJokesById(Long id) {
             List<JokesModel> allJokes = allJokes();
             return allJokes.stream()
