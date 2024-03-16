@@ -1,4 +1,4 @@
-package ru.baksnn.project.JokeBot.Controller;
+package ru.baksnn.project.JokeBot.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

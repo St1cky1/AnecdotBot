@@ -1,10 +1,10 @@
-    package ru.baksnn.project.JokeBot.Service;
+    package ru.baksnn.project.JokeBot.service;
 
     import com.fasterxml.jackson.databind.ObjectMapper;
     import lombok.RequiredArgsConstructor;
     import org.springframework.stereotype.Service;
-    import ru.baksnn.project.JokeBot.Model.JokesModel;
-    import ru.baksnn.project.JokeBot.Repository.JokesRepository;
+    import ru.baksnn.project.JokeBot.model.JokesModel;
+    import ru.baksnn.project.JokeBot.repository.JokesRepository;
 
     import java.io.IOException;
     import java.time.LocalDate;

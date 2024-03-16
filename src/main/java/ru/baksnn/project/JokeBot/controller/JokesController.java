@@ -1,11 +1,11 @@
-package ru.baksnn.project.JokeBot.Controller;
+package ru.baksnn.project.JokeBot.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.baksnn.project.JokeBot.Model.JokesModel;
-import ru.baksnn.project.JokeBot.Service.JokesService;
+import ru.baksnn.project.JokeBot.model.JokesModel;
+import ru.baksnn.project.JokeBot.service.JokesService;
 
 
 import java.time.LocalDate;

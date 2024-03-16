@@ -1,10 +1,9 @@
-package ru.baksnn.project.JokeBot.Model;
+package ru.baksnn.project.JokeBot.model;
 
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor

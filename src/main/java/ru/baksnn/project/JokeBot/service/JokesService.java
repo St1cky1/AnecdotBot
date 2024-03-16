@@ -1,8 +1,7 @@
-package ru.baksnn.project.JokeBot.Service;
+package ru.baksnn.project.JokeBot.service;
 
 
-import org.springframework.stereotype.Service;
-import ru.baksnn.project.JokeBot.Model.JokesModel;
+import ru.baksnn.project.JokeBot.model.JokesModel;
 import java.util.List;
 import java.util.Optional;
 
