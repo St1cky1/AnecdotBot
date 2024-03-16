@@ -9,5 +9,4 @@ import ru.baksnn.project.JokeBot.model.JokesModel;
 
 @Repository
 public interface JokesRepository extends JpaRepository<JokesModel, Long> {
-    List<JokesModel> getJokesBy();
 }
