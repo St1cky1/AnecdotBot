@@ -1,4 +1,4 @@
-package ru.baksnn.project.JokeBot.config;
+package ru.baksnn.project.JokeBot.JokeBot.bot;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
