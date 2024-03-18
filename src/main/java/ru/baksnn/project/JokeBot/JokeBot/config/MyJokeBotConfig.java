@@ -9,7 +9,7 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import ru.baksnn.project.JokeBot.JokeBot.bot.MyJokeBot;
 
 @Configuration
-public class BotConfig {
+public class MyJokeBotConfig {
     @Bean
     public CommandLineRunner registerTelegramBot(MyJokeBot myJokeBot) {
         return args -> {
