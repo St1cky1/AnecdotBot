@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface JokesService {
     List<JokesModel> allJokes();
 
-    Optional<JokesModel> addNewJoke(String json);
+    Optional<JokesModel> addNewJoke(JokesModel jokesModel);
 
     Optional<JokesModel> getJokesById(Long id);
 

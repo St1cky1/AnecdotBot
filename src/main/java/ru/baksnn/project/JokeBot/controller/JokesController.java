@@ -30,8 +30,8 @@ public class JokesController {
 
     @PostMapping
     public ResponseEntity<JokesModel> addNewJoke(@RequestBody JokesModel jokesModel) {
-        Optional<JokesModel> newJoke = service.addNewJoke(String.valueOf(jokesModel));
-        return newJoke.map(joke -> ResponseEntity.status(HttpStatus.CREATED).body(joke))
+        Optional<JokesModel> newJoke = service.addNewJoke(jokesModel);
+        return newJoke.map(jm -> ResponseEntity.status(HttpStatus.CREATED).body(jm))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
     }
 

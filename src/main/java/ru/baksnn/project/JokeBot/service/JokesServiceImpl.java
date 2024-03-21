@@ -23,19 +23,12 @@
             return jokesList;
         }
 
-        public Optional<JokesModel> addNewJoke(String json) {
-            ObjectMapper objectMapper = new ObjectMapper();
+        public Optional<JokesModel> addNewJoke(JokesModel newJoke) {
+            newJoke.setTimeCreated(LocalDate.now());
+            newJoke.setTimeUpdated(LocalDate.now());
             try {
-                JokesModel newJoke = objectMapper.readValue(json, JokesModel.class);
-                newJoke.setTimeCreated(LocalDate.now());
-                newJoke.setTimeUpdated(LocalDate.now());
-
                 JokesModel savedJoke = jokesRepository.save(newJoke);
-
                 return Optional.of(savedJoke);
-            } catch (IOException e) {
-                e.printStackTrace();
-                return Optional.empty();
             } catch (Exception e) {
                 e.printStackTrace();
                 return Optional.empty();
