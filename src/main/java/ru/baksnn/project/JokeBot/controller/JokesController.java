@@ -29,10 +29,12 @@ public class JokesController {
     }
 
     @PostMapping
-    public ResponseEntity<JokesModel> addNewJoke(@RequestBody String json) {
-        Optional<JokesModel> newJoke = service.addNewJoke(json);
-        return newJoke.map(jokesModel -> ResponseEntity.status(HttpStatus.CREATED).body(jokesModel)).orElseGet(() -> ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
+    public ResponseEntity<JokesModel> addNewJoke(@RequestBody JokesModel jokesModel) {
+        Optional<JokesModel> newJoke = service.addNewJoke(String.valueOf(jokesModel));
+        return newJoke.map(joke -> ResponseEntity.status(HttpStatus.CREATED).body(joke))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
     }
+
     @PutMapping("/{id}")
     public ResponseEntity<JokesModel> updateJoke(@PathVariable Long id, @RequestBody JokesModel updatedJoke) {
         Optional<JokesModel> existingJoke = service.getJokesById(id);
