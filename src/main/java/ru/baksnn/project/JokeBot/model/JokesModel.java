@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,9 +24,9 @@ public class JokesModel {
     private String joke;
 
     @Column(name = "timeCreated")
-    private LocalDate timeCreated;
+    private Date timeCreated;
 
     @Column(name = "timeUpdated")
-    private LocalDate timeUpdated;
+    private Date timeUpdated;
 
 }

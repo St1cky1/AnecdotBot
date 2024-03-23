@@ -7,8 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.baksnn.project.JokeBot.model.JokesModel;
 import ru.baksnn.project.JokeBot.service.JokesService;
 
-
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import java.util.Optional;
@@ -44,7 +43,7 @@ public class JokesController {
             JokesModel jokeToUpdate = existingJoke.get();
             jokeToUpdate.setJoke(updatedJoke.getJoke());
 
-            jokeToUpdate.setTimeUpdated(LocalDate.now());
+            jokeToUpdate.setTimeUpdated(new Date());
 
             JokesModel savedJoke = service.updateJoke(jokeToUpdate);
 
@@ -66,5 +65,3 @@ public class JokesController {
     }
 
 }
-
-

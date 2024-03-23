@@ -11,5 +11,4 @@ import ru.baksnn.project.JokeBot.model.JokesModel;
 @Repository
 public interface JokesRepository extends JpaRepository<JokesModel, Long> {
 
-    Optional<JokesModel> findTopByOrderByIdDesc();
 }
