@@ -56,7 +56,7 @@ public class MyJokeBot extends TelegramLongPollingBot {
         sendMessage(chatId, answer);
     }
 
-    private void sendMessage(long chatId, String textToSend) {
+    public void sendMessage(long chatId, String textToSend) {
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
         message.setText(textToSend);
@@ -68,7 +68,7 @@ public class MyJokeBot extends TelegramLongPollingBot {
         }
     }
 
-    private void sendJokesWithButton(long chatId) {
+    public void sendJokesWithButton(long chatId) {
         List<JokesModel> jokes = jokesRepository.findAll();
 
         if (jokes.isEmpty()) {
