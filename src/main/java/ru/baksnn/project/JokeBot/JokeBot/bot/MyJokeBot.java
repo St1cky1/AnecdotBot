@@ -51,7 +51,7 @@ public class MyJokeBot extends TelegramLongPollingBot {
         }
     }
 
-    private void startCommandReceived(long chatId, String name) {
+    public void startCommandReceived(long chatId, String name) {
         String answer = "Привет " + name + ", приятно познакомиться! \nНажимай кнопку или вводи команду /joke для получения шутки";
         sendMessage(chatId, answer);
     }
@@ -72,7 +72,7 @@ public class MyJokeBot extends TelegramLongPollingBot {
         List<JokesModel> jokes = jokesRepository.findAll();
 
         if (jokes.isEmpty()) {
-            sendMessage(chatId, "No jokes available.");
+            sendMessage(chatId, "Шутки не существует");
         } else {
             Random random = new Random();
             int randomIndex = random.nextInt(jokes.size());
@@ -89,6 +89,4 @@ public class MyJokeBot extends TelegramLongPollingBot {
             }
         }
     }
-
-
 }
