@@ -16,4 +16,6 @@ public interface JokesService {
     JokesModel updateJoke(JokesModel jokeToUpdate);
 
     JokesModel deleteJoke(JokesModel jokeToDelete);
+
+    JokesModel getRandomJoke();
 }

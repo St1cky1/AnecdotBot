@@ -13,6 +13,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class JokesServiceImpl implements JokesService {
     private final JokesRepository jokesRepository;
+    private final Random random = new Random();
+
+
     @Override
     public List<JokesModel> allJokes() {
         List<JokesModel> jokesList = jokesRepository.findAll();
@@ -62,4 +65,11 @@ public class JokesServiceImpl implements JokesService {
                 .filter(joke -> joke.getId().equals(id))
                 .findFirst();
     }
+    public JokesModel getRandomJoke() {
+        List<JokesModel> allJokes = jokesRepository.findAll();
+        int randomIndex = random.nextInt(allJokes.size());
+        return allJokes.get(randomIndex);
+    }
+
+
 }

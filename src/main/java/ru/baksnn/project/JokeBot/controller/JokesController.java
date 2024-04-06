@@ -74,4 +74,8 @@ public class JokesController {
             return ResponseEntity.notFound().build();
         }
     }
+    @GetMapping("/random")
+    public JokesModel getRandomJoke() {
+        return service.getRandomJoke();
+    }
 }
