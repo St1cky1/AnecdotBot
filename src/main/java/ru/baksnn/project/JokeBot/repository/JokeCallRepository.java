@@ -6,5 +6,4 @@ import ru.baksnn.project.JokeBot.model.JokeCall;
 
 @Repository
 public interface JokeCallRepository extends JpaRepository<JokeCall, Long> {
-
 }

@@ -43,8 +43,8 @@ public class MyJokeBot extends TelegramLongPollingBot {
             long chatId = update.getMessage().getChatId();
 
             if ("Показать шутку ✅".equals(messageText) || "/joke".equals(messageText)) {
-                String randomJokes = sendJokesWithButton(chatId);
-                jokeCallService.logJokeCall(chatId, 2L,String.valueOf(randomJokes)); // log the joke call
+                JokesModel randomJoke = sendJokesWithButton(chatId);
+                jokeCallService.logJokeCall(chatId, randomJoke.getId(), randomJoke.getJoke()); // log the joke call
             } else if ("/start".equals(messageText)) {
                 startCommandReceived(chatId, update.getMessage().getChat().getFirstName());
             } else {
@@ -70,7 +70,7 @@ public class MyJokeBot extends TelegramLongPollingBot {
         }
     }
 
-    public String sendJokesWithButton(long chatId) {
+    public JokesModel sendJokesWithButton(long chatId) {
         List<JokesModel> jokes = jokesRepository.findAll();
 
         if (jokes.isEmpty()) {
@@ -84,7 +84,6 @@ public class MyJokeBot extends TelegramLongPollingBot {
             SendMessage message = new SendMessage();
             message.setChatId(String.valueOf(chatId));
             message.setText(randomJoke.getJoke());
-            message.setText(String.valueOf(randomJoke.getId()));
 
             try {
                 execute(message);
@@ -92,7 +91,8 @@ public class MyJokeBot extends TelegramLongPollingBot {
                 throw new RuntimeException(e);
             }
 
-            return randomJoke.getJoke();
+            return randomJoke;
         }
     }
+
 }
