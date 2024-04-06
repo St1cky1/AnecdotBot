@@ -1,6 +1,8 @@
 package ru.baksnn.project.JokeBot.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.baksnn.project.JokeBot.model.JokeCall;
 import ru.baksnn.project.JokeBot.repository.JokeCallRepository;
@@ -9,7 +11,6 @@ import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,6 +39,11 @@ public class JokeCallServiceImpl implements JokeCallService {
                 .sorted(Comparator.comparing(jokeCall -> groupedJokes.get(jokeCall.getJokeId()).size(), Comparator.reverseOrder()))
                 .limit(5)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<JokeCall> getAllJokesPaged(Pageable pageable) {
+        return jokesCallRepository.findAll(pageable);
     }
 
     @Override
