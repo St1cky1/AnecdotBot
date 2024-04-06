@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.baksnn.project.JokeBot.model.JokeCall;
 import ru.baksnn.project.JokeBot.model.JokesModel;
 import ru.baksnn.project.JokeBot.service.JokeCallServiceImpl;
 import ru.baksnn.project.JokeBot.service.JokesService;
@@ -63,17 +64,6 @@ public class JokesController {
             JokesModel jokeToDelete = deleteToJoke.get();
             JokesModel deleteJoke = service.deleteJoke(jokeToDelete);
             return ResponseEntity.ok(deleteJoke);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @GetMapping("/logAndFetch/{id}")
-    public ResponseEntity<JokeCall> logAndFetch(@PathVariable Long id) {
-        Optional<JokesModel> joke = service.getJokesById(id);
-        if (joke.isPresent()) {
-            JokeCall jokeCall = jokeCallService.logJokeCall(id, joke.get().getJoke());
-            return ResponseEntity.ok(jokeCall);
         } else {
             return ResponseEntity.notFound().build();
         }
