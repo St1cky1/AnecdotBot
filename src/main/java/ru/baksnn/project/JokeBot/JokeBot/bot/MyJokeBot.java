@@ -2,7 +2,6 @@ package ru.baksnn.project.JokeBot.JokeBot.bot;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -10,17 +9,19 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.baksnn.project.JokeBot.model.JokesModel;
 import ru.baksnn.project.JokeBot.repository.JokesRepository;
+import ru.baksnn.project.JokeBot.service.JokeCallService;
 
 
 import java.util.List;
 import java.util.Random;
 
 @Data
-@Component
 @Service
 public class MyJokeBot extends TelegramLongPollingBot {
 
     private final JokesRepository jokesRepository;
+
+    private final JokeCallService jokeCallService;
 
     @Value("${telegram.bot.name}")
     private String botName;
@@ -42,7 +43,8 @@ public class MyJokeBot extends TelegramLongPollingBot {
             long chatId = update.getMessage().getChatId();
 
             if ("Показать шутку ✅".equals(messageText) || "/joke".equals(messageText)) {
-                sendJokesWithButton(chatId);
+                String randomJokes = sendJokesWithButton(chatId);
+                jokeCallService.logJokeCall(chatId, 2L,String.valueOf(randomJokes)); // log the joke call
             } else if ("/start".equals(messageText)) {
                 startCommandReceived(chatId, update.getMessage().getChat().getFirstName());
             } else {
@@ -68,11 +70,12 @@ public class MyJokeBot extends TelegramLongPollingBot {
         }
     }
 
-    public void sendJokesWithButton(long chatId) {
+    public String sendJokesWithButton(long chatId) {
         List<JokesModel> jokes = jokesRepository.findAll();
 
         if (jokes.isEmpty()) {
             sendMessage(chatId, "Шутки не существует");
+            return null;
         } else {
             Random random = new Random();
             int randomIndex = random.nextInt(jokes.size());
@@ -81,12 +84,15 @@ public class MyJokeBot extends TelegramLongPollingBot {
             SendMessage message = new SendMessage();
             message.setChatId(String.valueOf(chatId));
             message.setText(randomJoke.getJoke());
+            message.setText(String.valueOf(randomJoke.getId()));
 
             try {
                 execute(message);
             } catch (TelegramApiException e) {
                 throw new RuntimeException(e);
             }
+
+            return randomJoke.getJoke();
         }
     }
 }

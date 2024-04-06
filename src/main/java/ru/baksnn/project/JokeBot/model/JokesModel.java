@@ -3,7 +3,7 @@ package ru.baksnn.project.JokeBot.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
+
 import java.util.Date;
 
 @AllArgsConstructor
@@ -17,16 +17,17 @@ import java.util.Date;
 public class JokesModel {
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "jokes_id_seq")
+    @SequenceGenerator(name = "jokes_id_seq", sequenceName = "jokes_id_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "joke")
     private String joke;
 
-    @Column(name = "timeCreated")
+    @Column(name = "time_created")
     private Date timeCreated;
 
-    @Column(name = "timeUpdated")
+    @Column(name = "time_updated")
     private Date timeUpdated;
 
 }

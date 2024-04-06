@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.baksnn.project.JokeBot.model.JokesModel;
+import ru.baksnn.project.JokeBot.service.JokeCallServiceImpl;
 import ru.baksnn.project.JokeBot.service.JokesService;
 
 import java.util.Date;
@@ -17,6 +18,8 @@ import java.util.Optional;
 @AllArgsConstructor
 public class JokesController {
     private final JokesService service;
+    private final JokeCallServiceImpl jokeCallService;
+
     @GetMapping
     public List<JokesModel> allJokes() {
         return service.allJokes();
@@ -52,6 +55,7 @@ public class JokesController {
             return ResponseEntity.notFound().build();
         }
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<JokesModel> deleteJoke(@PathVariable Long id) {
         Optional<JokesModel> deleteToJoke = service.getJokesById(id);
@@ -64,4 +68,14 @@ public class JokesController {
         }
     }
 
+    @GetMapping("/logAndFetch/{id}")
+    public ResponseEntity<JokeCall> logAndFetch(@PathVariable Long id) {
+        Optional<JokesModel> joke = service.getJokesById(id);
+        if (joke.isPresent()) {
+            JokeCall jokeCall = jokeCallService.logJokeCall(id, joke.get().getJoke());
+            return ResponseEntity.ok(jokeCall);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
