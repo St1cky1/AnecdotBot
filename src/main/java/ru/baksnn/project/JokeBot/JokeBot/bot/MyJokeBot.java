@@ -6,12 +6,15 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.baksnn.project.JokeBot.model.JokesModel;
 import ru.baksnn.project.JokeBot.repository.JokesRepository;
 import ru.baksnn.project.JokeBot.service.JokeCallService;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -85,6 +88,19 @@ public class MyJokeBot extends TelegramLongPollingBot {
             message.setChatId(String.valueOf(chatId));
             message.setText(randomJoke.getJoke());
 
+            //создание replykeyboardmarkup(кнопка снизу)
+            ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
+            keyboardMarkup.setResizeKeyboard(true);
+            keyboardMarkup.setOneTimeKeyboard(false);
+
+            KeyboardRow row = new KeyboardRow();
+            row.add("Показать шутку ✅");
+
+            List<KeyboardRow> keyboard = new ArrayList<>();
+            keyboard.add(row);
+            keyboardMarkup.setKeyboard(keyboard);
+
+            message.setReplyMarkup(keyboardMarkup);
             try {
                 execute(message);
             } catch (TelegramApiException e) {
