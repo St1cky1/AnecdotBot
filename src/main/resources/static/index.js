@@ -9,8 +9,8 @@
     li.innerHTML = `
                 <p class="joke-info"><strong>ID:</strong> ${joke.id}</p>
                 <p class="joke-info"><strong>Шутка:</strong> ${joke.joke}</p>
-                <p class="joke-info"><strong>Дата создания:</strong> ${joke.timeCreated}</p>
-                <p class="joke-info"><strong>Дата обновления:</strong> ${joke.timeUpdated}</p>
+                <p class="joke-info"><strong>Дата создания:</strong> ${joke.time_created}</p>
+                <p class="joke-info"><strong>Дата обновления:</strong> ${joke.time_updated}</p>
             `;
     allJokesList.appendChild(li);
 });
