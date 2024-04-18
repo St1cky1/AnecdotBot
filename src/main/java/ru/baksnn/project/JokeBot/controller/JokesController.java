@@ -15,6 +15,7 @@ import ru.baksnn.project.JokeBot.service.JokesService;
 import java.util.Date;
 
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -25,11 +26,8 @@ public class JokesController {
     private final JokeCallServiceImpl jokeCallService;
 
     @GetMapping
-    public Page<JokeCall> allJokes(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return jokeCallService.getAllJokesPaged(pageable);
+    public List<JokesModel> allJokes() {
+        return service.allJokes();
     }
 
     @GetMapping("/{id}")
@@ -77,5 +75,13 @@ public class JokesController {
     @GetMapping("/random")
     public JokesModel getRandomJoke() {
         return service.getRandomJoke();
+    }
+
+    @GetMapping("/paged")
+    public Page<JokeCall> allJokesPaged(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return jokeCallService.getAllJokesPaged(pageable);
     }
 }
