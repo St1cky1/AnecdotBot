@@ -14,6 +14,7 @@
             `;
     allJokesList.appendChild(li);
 });
+
 }
 
     async function getJokeById() {
