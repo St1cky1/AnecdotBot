@@ -81,7 +81,7 @@ public class JokesController {
     public Page<JokeCall> allJokesPaged(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return jokeCallService.getAllJokesPaged(pageable);
+            Pageable pageable = PageRequest.of(page, size);
+            return jokeCallService.getAllJokesPaged(pageable);
     }
 }
