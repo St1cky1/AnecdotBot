@@ -29,4 +29,5 @@ public class JokesModel {
     @Column(name = "time_updated")
     private Date timeUpdated;
 
+
 }

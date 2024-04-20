@@ -30,4 +30,8 @@ public class JokeCall {
 
     @Column(name = "joke_text")
     private String jokeText;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "joke_id", insertable = false, updatable = false)
+    private JokesModel jokesModel;
 }
