@@ -3,6 +3,7 @@ package ru.baksnn.project.JokeBot.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -24,10 +25,10 @@ public class JokesModel {
     private String joke;
 
     @Column(name = "time_created")
-    private Date timeCreated;
+    private LocalDateTime timeCreated;
 
     @Column(name = "time_updated")
-    private Date timeUpdated;
+    private LocalDateTime timeUpdated;
 
 
 }

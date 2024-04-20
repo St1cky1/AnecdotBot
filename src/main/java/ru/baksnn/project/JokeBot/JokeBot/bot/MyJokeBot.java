@@ -11,7 +11,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.baksnn.project.JokeBot.model.JokesModel;
 import ru.baksnn.project.JokeBot.repository.JokesRepository;
-import ru.baksnn.project.JokeBot.service.JokeCallService;
+import ru.baksnn.project.JokeBot.service.UsersCallService;
 
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class MyJokeBot extends TelegramLongPollingBot {
 
     private final JokesRepository jokesRepository;
 
-    private final JokeCallService jokeCallService;
+    private final UsersCallService usersCallService;
 
     @Value("${telegram.bot.name}")
     private String botName;
@@ -47,7 +47,7 @@ public class MyJokeBot extends TelegramLongPollingBot {
 
             if ("Показать шутку ✅".equals(messageText) || "/joke".equals(messageText)) {
                 JokesModel randomJoke = sendJokesWithButton(chatId);
-                jokeCallService.logJokeCall(chatId, randomJoke.getId(), randomJoke.getJoke()); // log the joke call
+                usersCallService.logJokeCall(chatId, randomJoke.getId(), randomJoke.getJoke()); // log the joke call
             } else if ("/start".equals(messageText)) {
                 startCommandReceived(chatId, update.getMessage().getChat().getFirstName());
             } else {

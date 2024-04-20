@@ -7,12 +7,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.baksnn.project.JokeBot.model.JokeCall;
+import ru.baksnn.project.JokeBot.model.UsersCall;
 import ru.baksnn.project.JokeBot.model.JokesModel;
-import ru.baksnn.project.JokeBot.service.JokeCallServiceImpl;
+import ru.baksnn.project.JokeBot.service.UsersCallServiceImpl;
 import ru.baksnn.project.JokeBot.service.JokesService;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 
 import java.util.List;
@@ -23,7 +23,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class JokesController {
     private final JokesService service;
-    private final JokeCallServiceImpl jokeCallService;
+    private final UsersCallServiceImpl jokeCallService;
 
     @GetMapping
     public List<JokesModel> allJokes() {
@@ -51,7 +51,7 @@ public class JokesController {
             JokesModel jokeToUpdate = existingJoke.get();
             jokeToUpdate.setJoke(updatedJoke.getJoke());
 
-            jokeToUpdate.setTimeUpdated(new Date());
+            jokeToUpdate.setTimeUpdated(LocalDateTime.now());
 
             JokesModel savedJoke = service.updateJoke(jokeToUpdate);
 
@@ -78,7 +78,7 @@ public class JokesController {
     }
 
     @GetMapping("/paged")
-    public Page<JokeCall> allJokesPaged(
+    public Page<UsersCall> allJokesPaged(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
             Pageable pageable = PageRequest.of(page, size);

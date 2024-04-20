@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.baksnn.project.JokeBot.model.JokesModel;
 import ru.baksnn.project.JokeBot.repository.JokesRepository;
 
+import java.time.LocalDateTime;
 import java.util. *;
 import java.util.Optional;
 
@@ -25,8 +26,8 @@ public class JokesServiceImpl implements JokesService {
     }
 
     public Optional<JokesModel> addNewJoke(JokesModel newJoke) {
-        newJoke.setTimeCreated(new Date());
-        newJoke.setTimeUpdated(new Date());
+        newJoke.setTimeCreated(LocalDateTime.now());
+        newJoke.setTimeUpdated(LocalDateTime.now());
         try {
             JokesModel savedJoke = jokesRepository.save(newJoke);
             return Optional.of(savedJoke);
@@ -43,7 +44,7 @@ public class JokesServiceImpl implements JokesService {
 
             JokesModel jokeToUpdate = existingJoke.get();
             jokeToUpdate.setJoke(updatedJoke.getJoke());
-            jokeToUpdate.setTimeUpdated(new Date());
+            jokeToUpdate.setTimeUpdated(LocalDateTime.now());
 
             return jokesRepository.save(jokeToUpdate);
         } else {
