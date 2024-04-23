@@ -3,7 +3,7 @@ package ru.baksnn.project.JokeBot.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.baksnn.project.JokeBot.model.JokesModel;
+import ru.baksnn.project.JokeBot.model.Jokes;
 import ru.baksnn.project.JokeBot.repository.JokesRepository;
 
 import java.time.LocalDateTime;
@@ -18,31 +18,31 @@ public class JokesServiceImpl implements JokesService {
 
 
     @Override
-    public List<JokesModel> allJokes() {
-        List<JokesModel> jokesList = jokesRepository.findAll();
+    public List<Jokes> allJokes() {
+        List<Jokes> jokesList = jokesRepository.findAll();
         jokesList.forEach(joke -> {
         });
         return jokesList;
     }
 
-    public Optional<JokesModel> addNewJoke(JokesModel newJoke) {
+    public Optional<Jokes> addNewJoke(Jokes newJoke) {
         newJoke.setTimeCreated(LocalDateTime.now());
         newJoke.setTimeUpdated(LocalDateTime.now());
         try {
-            JokesModel savedJoke = jokesRepository.save(newJoke);
+            Jokes savedJoke = jokesRepository.save(newJoke);
             return Optional.of(savedJoke);
         } catch (Exception e) {
             e.printStackTrace();
             return Optional.empty();
         }
     }
-    public JokesModel updateJoke(JokesModel updatedJoke) {
+    public Jokes updateJoke(Jokes updatedJoke) {
 
-        Optional<JokesModel> existingJoke = jokesRepository.findById(updatedJoke.getId());
+        Optional<Jokes> existingJoke = jokesRepository.findById(updatedJoke.getId());
 
         if (existingJoke.isPresent()) {
 
-            JokesModel jokeToUpdate = existingJoke.get();
+            Jokes jokeToUpdate = existingJoke.get();
             jokeToUpdate.setJoke(updatedJoke.getJoke());
             jokeToUpdate.setTimeUpdated(LocalDateTime.now());
 
@@ -51,8 +51,8 @@ public class JokesServiceImpl implements JokesService {
             throw new NoSuchElementException("Шутка с " + updatedJoke.getId() + " ID не найдена");
         }
     }
-    public JokesModel deleteJoke(JokesModel deletedJoke) {
-        Optional<JokesModel> existingJoke = jokesRepository.findById(deletedJoke.getId());
+    public Jokes deleteJoke(Jokes deletedJoke) {
+        Optional<Jokes> existingJoke = jokesRepository.findById(deletedJoke.getId());
         if (existingJoke.isPresent()) {
             jokesRepository.deleteById(deletedJoke.getId());
             return existingJoke.get();
@@ -60,14 +60,14 @@ public class JokesServiceImpl implements JokesService {
             throw new NoSuchElementException("Шутка с " + deletedJoke.getId() + " ID не найдена");
         }
     }
-    public Optional<JokesModel> getJokesById(Long id) {
-        List<JokesModel> allJokes = allJokes();
+    public Optional<Jokes> getJokesById(Long id) {
+        List<Jokes> allJokes = allJokes();
         return allJokes.stream()
                 .filter(joke -> joke.getId().equals(id))
                 .findFirst();
     }
-    public JokesModel getRandomJoke() {
-        List<JokesModel> allJokes = jokesRepository.findAll();
+    public Jokes getRandomJoke() {
+        List<Jokes> allJokes = jokesRepository.findAll();
         int randomIndex = random.nextInt(allJokes.size());
         return allJokes.get(randomIndex);
     }

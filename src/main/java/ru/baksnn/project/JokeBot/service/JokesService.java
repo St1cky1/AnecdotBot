@@ -1,21 +1,21 @@
 package ru.baksnn.project.JokeBot.service;
 
 
-import ru.baksnn.project.JokeBot.model.JokesModel;
+import ru.baksnn.project.JokeBot.model.Jokes;
 import java.util.List;
 import java.util.Optional;
 
 public interface JokesService {
-    List<JokesModel> allJokes();
+    List<Jokes> allJokes();
 
-    Optional<JokesModel> addNewJoke(JokesModel jokesModel);
+    Optional<Jokes> addNewJoke(Jokes jokes);
 
-    Optional<JokesModel> getJokesById(Long id);
+    Optional<Jokes> getJokesById(Long id);
 
 
-    JokesModel updateJoke(JokesModel jokeToUpdate);
+    Jokes updateJoke(Jokes jokeToUpdate);
 
-    JokesModel deleteJoke(JokesModel jokeToDelete);
+    Jokes deleteJoke(Jokes jokeToDelete);
 
-    JokesModel getRandomJoke();
+    Jokes getRandomJoke();
 }

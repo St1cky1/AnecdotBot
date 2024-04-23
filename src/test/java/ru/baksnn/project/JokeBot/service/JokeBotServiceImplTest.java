@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import ru.baksnn.project.JokeBot.model.JokesModel;
+import ru.baksnn.project.JokeBot.model.Jokes;
 import ru.baksnn.project.JokeBot.repository.JokesRepository;
 
 import java.util.ArrayList;
@@ -33,13 +33,13 @@ class JokesServiceImplTest {
 
     @Test
     void allJokes_returnListOfJokes() {
-        List<JokesModel> mockJokesList = new ArrayList<>();
-        mockJokesList.add(new JokesModel(1l,"Test Joke 1",new Date(),new Date()));
-        mockJokesList.add(new JokesModel(1L,"Test Joke 2",new Date(),new Date()));
+        List<Jokes> mockJokesList = new ArrayList<>();
+        mockJokesList.add(new Jokes(1l,"Test Joke 1",new Date(),new Date()));
+        mockJokesList.add(new Jokes(1L,"Test Joke 2",new Date(),new Date()));
 
         when(jokesRepository.findAll()).thenReturn(mockJokesList);
 
-        List<JokesModel> result = jokesService.allJokes();
+        List<Jokes> result = jokesService.allJokes();
 
         assertEquals(mockJokesList.size(), result.size());
         assertEquals(mockJokesList, result);
@@ -47,11 +47,11 @@ class JokesServiceImplTest {
 
     @Test
     void addNewJoke_returnSavedJoke() {
-        JokesModel newJoke = new JokesModel(1L,"New Joke",new Date(),new Date());
+        Jokes newJoke = new Jokes(1L,"New Joke",new Date(),new Date());
 
         when(jokesRepository.save(any())).thenReturn(newJoke);
 
-        Optional<JokesModel> result = jokesService.addNewJoke(newJoke);
+        Optional<Jokes> result = jokesService.addNewJoke(newJoke);
 
         assertTrue(result.isPresent());
         assertEquals(newJoke, result.get());
@@ -59,20 +59,20 @@ class JokesServiceImplTest {
 
     @Test
     void updateJoke_existingJoke_returnUpdatedJoke() {
-        JokesModel existingJoke = new JokesModel(1L, "Existing Joke",new Date(),new Date());
-        JokesModel updatedJoke = new JokesModel(1L, "Updated Joke",new Date(),new Date());
+        Jokes existingJoke = new Jokes(1L, "Existing Joke",new Date(),new Date());
+        Jokes updatedJoke = new Jokes(1L, "Updated Joke",new Date(),new Date());
 
         when(jokesRepository.findById(existingJoke.getId())).thenReturn(Optional.of(existingJoke));
         when(jokesRepository.save(any())).thenReturn(updatedJoke);
 
-        JokesModel result = jokesService.updateJoke(updatedJoke);
+        Jokes result = jokesService.updateJoke(updatedJoke);
 
         assertEquals(updatedJoke, result);
     }
 
     @Test
     void updateJoke_nonExistingJoke_throwNoSuchElementException() {
-        JokesModel nonExistingJoke = new JokesModel(1L, "Non Existing Joke",new Date(),new Date());
+        Jokes nonExistingJoke = new Jokes(1L, "Non Existing Joke",new Date(),new Date());
 
         when(jokesRepository.findById(nonExistingJoke.getId())).thenReturn(Optional.empty());
 
@@ -81,18 +81,18 @@ class JokesServiceImplTest {
 
     @Test
     void deleteJoke_existingJoke_returnDeletedJoke() {
-        JokesModel existingJoke = new JokesModel(1L, "Existing Joke",new Date(),new Date());
+        Jokes existingJoke = new Jokes(1L, "Existing Joke",new Date(),new Date());
 
         when(jokesRepository.findById(existingJoke.getId())).thenReturn(Optional.of(existingJoke));
 
-        JokesModel result = jokesService.deleteJoke(existingJoke);
+        Jokes result = jokesService.deleteJoke(existingJoke);
 
         assertEquals(existingJoke, result);
     }
 
     @Test
     void deleteJoke_nonExistingJoke_throwNoSuchElementException() {
-        JokesModel nonExistingJoke = new JokesModel(1L, "Non Existing Joke",new Date(),new Date());
+        Jokes nonExistingJoke = new Jokes(1L, "Non Existing Joke",new Date(),new Date());
 
         when(jokesRepository.findById(nonExistingJoke.getId())).thenReturn(Optional.empty());
 
@@ -101,13 +101,13 @@ class JokesServiceImplTest {
 
     @Test
     void getJokesById_existingJoke_returnJokeOptional() {
-        JokesModel existingJoke = new JokesModel(1L, "Existing Joke",new Date(),new Date());
-        List<JokesModel> allJokes = new ArrayList<>();
+        Jokes existingJoke = new Jokes(1L, "Existing Joke",new Date(),new Date());
+        List<Jokes> allJokes = new ArrayList<>();
         allJokes.add(existingJoke);
 
         when(jokesService.allJokes()).thenReturn(allJokes);
 
-        Optional<JokesModel> result = jokesService.getJokesById(existingJoke.getId());
+        Optional<Jokes> result = jokesService.getJokesById(existingJoke.getId());
 
         assertTrue(result.isPresent());
         assertEquals(existingJoke, result.get());
@@ -115,12 +115,12 @@ class JokesServiceImplTest {
 
     @Test
     void getJokesById_nonExistingJoke_returnEmptyOptional() {
-        JokesModel nonExistingJoke = new JokesModel(1L, "Non Existing Joke",new Date(),new Date());
-        List<JokesModel> allJokes = new ArrayList<>();
+        Jokes nonExistingJoke = new Jokes(1L, "Non Existing Joke",new Date(),new Date());
+        List<Jokes> allJokes = new ArrayList<>();
 
         when(jokesRepository.findAll()).thenReturn(allJokes);
 
-        Optional<JokesModel> result = jokesService.getJokesById(nonExistingJoke.getId());
+        Optional<Jokes> result = jokesService.getJokesById(nonExistingJoke.getId());
 
         assertFalse(result.isPresent());
     }

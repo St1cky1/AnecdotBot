@@ -9,9 +9,9 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import ru.baksnn.project.JokeBot.model.JokesModel;
+import ru.baksnn.project.JokeBot.model.Jokes;
 import ru.baksnn.project.JokeBot.repository.JokesRepository;
-import ru.baksnn.project.JokeBot.service.UsersCallService;
+import ru.baksnn.project.JokeBot.service.UsersService;
 
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class MyJokeBot extends TelegramLongPollingBot {
 
     private final JokesRepository jokesRepository;
 
-    private final UsersCallService usersCallService;
+    private final UsersService usersService;
 
     @Value("${telegram.bot.name}")
     private String botName;
@@ -46,8 +46,8 @@ public class MyJokeBot extends TelegramLongPollingBot {
             long chatId = update.getMessage().getChatId();
 
             if ("Показать шутку ✅".equals(messageText) || "/joke".equals(messageText)) {
-                JokesModel randomJoke = sendJokesWithButton(chatId);
-                usersCallService.logJokeCall(chatId, randomJoke.getId(), randomJoke.getJoke()); // log the joke call
+                Jokes randomJoke = sendJokesWithButton(chatId);
+                usersService.logJokeCall(chatId, randomJoke.getId(), randomJoke.getJoke()); // log the joke call
             } else if ("/start".equals(messageText)) {
                 startCommandReceived(chatId, update.getMessage().getChat().getFirstName());
             } else {
@@ -73,8 +73,8 @@ public class MyJokeBot extends TelegramLongPollingBot {
         }
     }
 
-    public JokesModel sendJokesWithButton(long chatId) {
-        List<JokesModel> jokes = jokesRepository.findAll();
+    public Jokes sendJokesWithButton(long chatId) {
+        List<Jokes> jokes = jokesRepository.findAll();
 
         if (jokes.isEmpty()) {
             sendMessage(chatId, "Шутки не существует");
@@ -82,7 +82,7 @@ public class MyJokeBot extends TelegramLongPollingBot {
         } else {
             Random random = new Random();
             int randomIndex = random.nextInt(jokes.size());
-            JokesModel randomJoke = jokes.get(randomIndex);
+            Jokes randomJoke = jokes.get(randomIndex);
 
             SendMessage message = new SendMessage();
             message.setChatId(String.valueOf(chatId));
