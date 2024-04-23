@@ -2,6 +2,7 @@
     async function getAllJokes() {
     const response = await fetch('/jokes');
     const jokes = await response.json();
+    if (response.ok) {
     const allJokesList = document.getElementById('allJokesList');
     allJokesList.innerHTML = '';
     jokes.forEach(joke => {
@@ -9,14 +10,14 @@
     li.innerHTML = `
                 <p class="joke-info"><strong>ID:</strong> ${joke.id}</p>
                 <p class="joke-info"><strong>Шутка:</strong> ${joke.joke}</p>
-                <p class="joke-info"><strong>Дата создания:</strong> ${joke.time_created}</p>
-                <p class="joke-info"><strong>Дата обновления:</strong> ${joke.time_updated}</p>
+                <p class="joke-info"><strong>Дата создания:</strong> ${joke.timeCreated}</p>
+                <p class="joke-info"><strong>Дата обновления:</strong> ${joke.timeUpdated}</p>
             `;
     allJokesList.appendChild(li);
 });
 
 }
-
+}
     async function getJokeById() {
     const jokeId = document.getElementById('jokeId').value;
     if (!jokeId) {
@@ -31,7 +32,7 @@
             <strong>ID</strong>: ${joke.id}<br>
             <strong>Шутка:</strong> ${joke.joke}<br>
             <strong>Дата создания:</strong> ${joke.timeCreated},<br>
-            <strong>Дата обновления:</strong> ${joke.timeUpdated}
+            <strong>Дата обновления:</strong> dsfsd${joke.timeUpdated}
         `;
 } else {
     document.getElementById('jokeById').textContent = 'Шутка не найдена';

@@ -19,13 +19,13 @@
         </createTable>
     </changeSet>
     <changeSet id="1712407954669-3" author="BakSnn">
-        <createSequence incrementBy="1" sequenceName="jokes_call_id_seq"/>
+        <createSequence incrementBy="1" sequenceName="users_call_id_seq"/>
     </changeSet>
     <changeSet id="1712407954669-4" author="BakSnn">
         <validCheckSum>ANY</validCheckSum>
-        <createTable tableName="joke_call">
+        <createTable tableName="users_call">
             <column autoIncrement="true" name="id" type="bigint">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="joke_call_pkey"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="users_call_pkey"/>
             </column>
             <column name="joke_id" type="bigint">
                 <constraints nullable="false"/>
@@ -37,8 +37,8 @@
     </changeSet>
     <changeSet id="1712407954669-5" author="BakSnn">
         <addForeignKeyConstraint baseColumnNames="joke_id"
-                                 baseTableName="joke_call"
-                                 constraintName="fk_joke_call_joke_id"
+                                 baseTableName="users_call"
+                                 constraintName="fk_users_call_joke_id"
                                  referencedColumnNames="id"
                                  referencedTableName="jokes"/>
     </changeSet>
