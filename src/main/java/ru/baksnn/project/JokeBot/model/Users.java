@@ -10,12 +10,13 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 @Builder
-@Entity(name = "users_call")
-public class UsersCall {
+@Entity(name = "users")
+@Table(name = "users")
+public class Users {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_call_id_seq")
-    @SequenceGenerator(name = "users_call_id_seq", sequenceName = "users_call_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_seq")
+    @SequenceGenerator(name = "users_seq", sequenceName = "users_seq", allocationSize = 1)
     @Column(name = "id")
     private Long id;
 
@@ -33,5 +34,5 @@ public class UsersCall {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "joke_id", insertable = false, updatable = false)
-    private JokesModel jokesModel;
+    private Jokes jokes;
 }

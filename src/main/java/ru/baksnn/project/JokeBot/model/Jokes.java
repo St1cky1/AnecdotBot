@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -12,9 +11,9 @@ import java.util.Date;
 @Setter
 @ToString
 @Builder
-@Entity(name = "jokes") 
+@Entity(name = "jokes")
 @Table(name = "jokes")
-public class JokesModel {
+public class Jokes {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "jokes_id_seq")
