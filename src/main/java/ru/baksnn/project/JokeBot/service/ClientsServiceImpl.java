@@ -1,13 +1,13 @@
 package ru.baksnn.project.JokeBot.service;
 
-// ... other imports ...
+import org.springframework.security.core.userdetails.UserDetailsService;
+
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 import ru.baksnn.project.JokeBot.exceptions.UsernameAlreadyExistsException;
 import ru.baksnn.project.JokeBot.model.Clients;
 import ru.baksnn.project.JokeBot.model.ClientsAuthority;
@@ -15,10 +15,10 @@ import ru.baksnn.project.JokeBot.model.ClientsRole;
 import ru.baksnn.project.JokeBot.repository.ClientsRepository;
 import ru.baksnn.project.JokeBot.repository.ClientsRolesRepository;
 
+
 @RequiredArgsConstructor
 @Service
 public class ClientsServiceImpl implements ClientsService, UserDetailsService {
-
     private final ClientsRolesRepository clientsRolesRepository;
     private final ClientsRepository clientsRepository;
     private final PasswordEncoder passwordEncoder;
@@ -35,12 +35,13 @@ public class ClientsServiceImpl implements ClientsService, UserDetailsService {
                             .setExpired(false)
                             .setEnabled(true)
             );
-            clientsRolesRepository.save(new ClientsRole(null, ClientsAuthority.PLACE_JOKES, user));
+            clientsRolesRepository.save(new ClientsRole(null, ClientsAuthority.VIEW_JOKES, user));
         }
         else {
             throw new UsernameAlreadyExistsException();
         }
     }
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
